@@ -1,4 +1,4 @@
-export const ResultsPage = () => {
+export const StartList = () => {
     return (
         <></>
     );

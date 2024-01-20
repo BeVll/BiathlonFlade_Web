@@ -20,7 +20,7 @@ export const Header = (props:any) => {
                 <Image className="rounded-none" width={180} src={theme == "dark" ? logo : logoDark}/>
 
             </NavbarBrand>
-            <NavbarContent className="hidden sm:flex gap-4" justify="center">
+            <NavbarContent className="hidden sm:flex gap-4 font-medium" justify="center">
                 <NavbarItem>
                     <Link color="foreground" href="#">
                         Home

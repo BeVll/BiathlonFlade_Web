@@ -26,6 +26,10 @@ export default {
           medium: "1rem", // text-medium
           large: "1.125rem", // text-large
         },
+        fontFamily:{
+          'display': ['Oswald'],
+          'body': ['"Open Sans"'],
+        },
         lineHeight: {
           tiny: "1rem", // text-tiny
           small: "1.25rem", // text-small
@@ -60,6 +64,19 @@ export default {
 
 
           }, // dark theme colors
+          extend: {
+            animation: {
+              fade: 'fadeOut 5s ease-in',
+            },
+
+            // that is actual animation
+            keyframes: theme => ({
+              fadeOut: {
+                '0%': { backgroundColor: theme('opacity.0') },
+                '100%': { backgroundColor: theme('opacity.100') },
+              },
+            }),
+          }
         },
         // ... custom themes
       },

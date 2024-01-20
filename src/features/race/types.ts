@@ -12,12 +12,12 @@ export interface IResultModel {
     teamId?: number | null;
     stageNumber?: number | null;
 
-    race: IEventModel;
+    race: IRaceModel;
     player: IUserModel;
-    checkpoint: ICheckPointModel;
+    raceCheckpoint: IRaceCheckPointModel;
 }
 
-export interface IEventModel {
+export interface IRaceModel {
     id: number;
     eventName: string;
     eventTypeId: number;
@@ -58,4 +58,12 @@ export interface ICheckPointModel {
     x2: number;
     y2: number;
     z2: number;
+}
+
+export interface IRaceCheckPointModel {
+    id: number;
+    name: string;
+    race: IRaceModel,
+    checkPoint: ICheckPointModel,
+    lap: number
 }

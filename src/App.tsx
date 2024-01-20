@@ -12,6 +12,7 @@ import {useTheme} from "next-themes";
 import {ResultsPage} from "./pages/ResultsPage.tsx";
 import {formHttp, http} from "../http.ts";
 import {RaceDetails} from "./pages/RaceDetails.tsx";
+import {CalendarPage} from "./pages/CalendarPage.tsx";
 
 function App() {
     const dispatch = useDispatch();
@@ -87,7 +88,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Layout/>}>
                             <Route index element={<Home/>}/>
-                            <Route path="results" element={<ResultsPage/>}/>
+                            <Route path="calendar" element={<CalendarPage/>}/>
                             <Route path="race/:id" element={<RaceDetails/>}/>
                             {/*<Route path="*" element={<NoPage />} />*/}
                         </Route>

@@ -1,14 +1,25 @@
 import {http} from "../../../../http.ts";
-import {IResultModel} from "../types.ts";
+import {IEventModel, IRaceCheckPointModel, IRaceModel, IResultModel} from "../types.ts";
 
 const RaceApi = {
-    getAllSubjects: async function (raceId: number, checkpointTypeId: number) {
+    getAllResults: async function (raceId: number, raceCheckpointId: number) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
 
-        const response = await http.get<IResultModel[]>("api/results/all?raceId="+raceId+"&checkpointTypeId="+checkpointTypeId);
+        const response = await http.get<IResultModel[]>("results/all?raceId="+raceId+"&checkpointId="+raceCheckpointId);
         return response;
     },
+    getAllCheckPoints: async function (raceId: number) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
 
+        const response = await http.get<IRaceCheckPointModel[]>("results/allCheckPoints/"+raceId);
+        return response;
+    },
+    getRace: async function (raceId: number) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+
+        const response = await http.get<IRaceModel>("Races/"+raceId);
+        return response;
+    },
 }
 
 export default RaceApi;
