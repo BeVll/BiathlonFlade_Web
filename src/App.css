@@ -11,3 +11,15 @@
         opacity: 100;
     }
 }
+
+/*.group {*/
+/*    padding: 0 !important;*/
+/*}*/
+
+.bg-divider{
+    margin: 0 !important;
+}
+
+ul[role=list]{
+    gap: 0 !important;
+}

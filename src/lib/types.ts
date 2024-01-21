@@ -17,13 +17,23 @@ export interface IResultModel {
     raceCheckpoint: IRaceCheckPointModel;
 }
 
+export interface IEventModel {
+    id: number;
+    name: string;
+    startDate: Date|undefined;
+    endDate: Date|undefined;
+    track: ITrackModel
+    country: ICountryModel
+    races: IRaceModel[]
+}
+
 export interface IRaceModel {
     id: number;
-    eventName: string;
-    eventTypeId: number;
-    teamEvent: boolean;
+    raceName: string;
+    raceTypeId: number;
+    teamRace: boolean;
     trackId: number;
-    eventDate: Date;
+    raceDate: Date;
     track: ITrackModel
 }
 
@@ -45,6 +55,7 @@ export interface ICountryModel {
 export interface ITrackModel {
     id: number;
     trackName: string;
+    country: ICountryModel
 }
 
 export interface ICheckPointModel {

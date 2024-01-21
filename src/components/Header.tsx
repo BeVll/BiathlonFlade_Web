@@ -27,7 +27,7 @@ export const Header = (props:any) => {
                     </Link>
                 </NavbarItem>
                 <NavbarItem isActive>
-                    <Link href="#" aria-current="page">
+                    <Link href="/calendar" aria-current="page">
                         Calendar
                     </Link>
                 </NavbarItem>

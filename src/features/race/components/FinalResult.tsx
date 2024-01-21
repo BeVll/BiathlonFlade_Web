@@ -11,7 +11,7 @@ import {
     TableRow
 } from "@nextui-org/react";
 import {ReactNode, useEffect, useMemo, useState} from "react";
-import {IRaceCheckPointModel, IResultModel} from "../types.ts";
+import {IRaceCheckPointModel, IResultModel} from "../../../lib/types.ts";
 import {useParams} from "react-router-dom";
 import RaceApi from "../api/RaceApi.ts";
 import {format} from "date-fns";
@@ -26,7 +26,8 @@ export const FinalResult = () => {
     let { id } = useParams();
 
     const [isLoading, setLoading] = useState(true);
-    const loadingState = isLoading ? "loading" : "idle";
+    const [isLoadingCheckPoints, setLoadingCheckPoints] = useState(true);
+    const loadingState = isLoading && isLoadingCheckPoints ? "loading" : "idle";
     const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("http://localhost:5058/resultsHub", { withCredentials: true })
         .configureLogging(signalR.LogLevel.Information)
@@ -43,7 +44,8 @@ export const FinalResult = () => {
                 setCheckPoints(res.data);
                 setCurrentCheckPoint(res.data[res.data.length - 1]);
                 resultLoad(res.data[res.data.length - 1]);
-                setLoading(false);
+                setLoadingCheckPoints(false);
+
             });
 
         }
@@ -150,6 +152,7 @@ export const FinalResult = () => {
         if(id)
             RaceApi.getAllResults(parseInt(id), cp.id).then(res => {
                 setResults(res.data);
+                setLoading(false);
             });
     };
 
@@ -157,40 +160,45 @@ export const FinalResult = () => {
     const topContent = useMemo(() => {
         let isFirst = checkPoints.indexOf(currentCheckPoint) == 0 ? true : false;
         let isLast = checkPoints.indexOf(currentCheckPoint) == checkPoints.length-1 ? true : false;
-
-        return (
-            <CheckPointChange raceCheckPoint={currentCheckPoint} onClickLeft={onClickLeftCP} onClickRight={onClickRightCP} isFirst={isFirst} isLast={isLast}/>
-        )
+        if(checkPoints.length > 0){
+            return (
+                <CheckPointChange raceCheckPoint={currentCheckPoint} onClickLeft={onClickLeftCP} onClickRight={onClickRightCP} isFirst={isFirst} isLast={isLast}/>
+            )
+        }
+        else{
+            <></>
+        }
     }, [currentCheckPoint, checkPoints]);
 
-    return (
-        <Table
+    if(checkPoints.length > 0 && !isLoadingCheckPoints){
+        return (
+            <Table
 
-            className="mt-4 p-0 rounded-2xl w-full min-h-[400px]"
-            aria-label="Example table with custom cells, pagination and sorting"
-            isHeaderSticky={true}
-            topContent={topContent}
-            bottomContentPlacement="outside"
-            classNames={{
-                wrapper: "md:max-h-[1000px] bg-transparent p-0 border-0 shadow-none",
-            }}
-        >
-            <TableHeader>
-                <TableColumn width={30}>#</TableColumn>
-                <TableColumn>NAME</TableColumn>
-                <TableColumn align="start" className="text-right" width={100}>RESULT</TableColumn>
-            </TableHeader>
-            <TableBody items={results} loadingState={loadingState} loadingContent={<Spinner />} emptyContent={"No results"}>
-                {
-                    results?.map((result, index:number) => {
-                        return (
-                            <TableRow key={result.id} className="example-style hover:bg-content2 cursor-pointer animate-fade ease-in transition-opacity duration-7000">
-                                <TableCell>
+                className="mt-4 p-0 rounded-2xl w-full min-h-[400px]"
+                aria-label="Example table with custom cells, pagination and sorting"
+                isHeaderSticky={true}
+                topContent={topContent}
+                bottomContentPlacement="outside"
+                classNames={{
+                    wrapper: "md:max-h-[1000px] bg-transparent p-0 border-0 shadow-none",
+                }}
+            >
+                <TableHeader>
+                    <TableColumn width={30}>#</TableColumn>
+                    <TableColumn>NAME</TableColumn>
+                    <TableColumn align="start" className="text-right" width={100}>RESULT</TableColumn>
+                </TableHeader>
+                <TableBody items={results} loadingState={loadingState} loadingContent={<Spinner />} emptyContent={"No results"}>
+                    {
+                        results?.map((result, index:number) => {
+                            return (
+                                <TableRow key={result.id} className="example-style hover:bg-content2 cursor-pointer animate-fade ease-in transition-opacity duration-7000">
+                                    <TableCell>
                                         <Chip className="h-6 min-w-6 text-center w-6 p-0" color={"success"}>
                                             {index+1}
                                         </Chip>
-                                </TableCell>
-                                <TableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         <div className="flex  gap-2">
 
                                             <div className="flex gap-1 items-center">
@@ -202,28 +210,37 @@ export const FinalResult = () => {
                                                         {result.player.userName}
                                                     </span>
                                         </div>
-                                </TableCell>
-                                <TableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         <div className="flex w-auto flex-col items-end">
                                                     <span className="font-bold text-[16px]">
                                                         {result.resultValue ? convertTime(result.resultValue) : "DNF"}
                                                     </span>
-                                                    {
-                                                    index+1 != 1 && (
-                                                        <span className="font-light text-[16px]">
+                                            {
+                                                index+1 != 1 && (
+                                                    <span className="font-light text-[16px]">
                                                                     +{result.resultValue && results[0].resultValue ? convertTime(result.resultValue - results[0].resultValue) : "DNF"}
                                                                 </span>
-                                                    )
+                                                )
                                             }
 
                                         </div>
-                                </TableCell>
-                            </TableRow>
+                                    </TableCell>
+                                </TableRow>
 
-                        )
-                    })
-                }
-            </TableBody>
-        </Table>
+                            )
+                        })
+                    }
+                </TableBody>
+            </Table>
+        )
+    }
+
+    return (
+        <div className="flex w-full justify-center h-full items-center">
+            <h1 className="text-default-500 font-bold mt-4">
+                No data for race
+            </h1>
+        </div>
     );
 };

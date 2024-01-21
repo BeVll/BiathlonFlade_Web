@@ -1,5 +1,5 @@
 import {http} from "../../../../http.ts";
-import {IEventModel, IRaceCheckPointModel, IRaceModel, IResultModel} from "../types.ts";
+import {IEventModel, IRaceCheckPointModel, IRaceModel, IResultModel} from "../../../lib/types.ts";
 
 const RaceApi = {
     getAllResults: async function (raceId: number, raceCheckpointId: number) {

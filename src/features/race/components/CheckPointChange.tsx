@@ -1,4 +1,4 @@
-import {IRaceCheckPointModel} from "../types.ts";
+import {IRaceCheckPointModel} from "../../../lib/types.ts";
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 import {Button} from "@nextui-org/react";
 import {MouseEventHandler, useEffect, useState} from "react";
